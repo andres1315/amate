@@ -4,6 +4,9 @@ module.exports = {
     './index.html',
     './src/**/*.{html,jsx,js}',
     './src/components/**/*.{html,jsx,js}',
+    './node_modules/tw-elements/dist/js/**/*.js',
+    './node_modules/flowbite/**/*.js',
+    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
   ],
   prefix: '',
   important: false,
@@ -14,7 +17,8 @@ module.exports = {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
-      "2xl": "1440px",
+      '2xl': '1440px',
+      '3xl': '1920px',
     },
     colors: {
       transparent: 'transparent',
@@ -47,7 +51,7 @@ module.exports = {
       },
 
       gray: {
-        "lightest": "#fff",
+        'lightest': '#fff',
         100: '#f7fafc',
         200: '#edf2f7',
         300: '#e2e8f0',
@@ -223,11 +227,11 @@ module.exports = {
       md: '0.375rem',
       lg: '0.5rem',
       xl: '0.75rem',
-      "2xl": '1rem',
-      "3xl": '1.5rem',
-      "4xl": '2.5rem',
-      "5xl":'3rem',
-      "6xl":'4.5rem',
+      '2xl': '1rem',
+      '3xl': '1.5rem',
+      '4xl': '2.5rem',
+      '5xl':'3rem',
+      '6xl':'4.5rem',
       full: '9999px',
     },
     borderWidth: {
@@ -389,10 +393,10 @@ module.exports = {
       ...theme('spacing'),
       ...negative(theme('spacing')),
     }),
-    maxHeight: {
+    /* maxHeight: {
       full: '100%',
       screen: '100vh',
-    },
+    }, */
     maxWidth: (theme, { breakpoints }) => ({
       none: 'none',
       xs: '20rem',
@@ -784,5 +788,8 @@ module.exports = {
     transitionTimingFunction: ['responsive'],
     transitionDuration: ['responsive'],
   },
-  plugins: [],
+  plugins: [
+    require('tw-elements/dist/plugin'),
+    require('flowbite/plugin')
+  ],
 }
