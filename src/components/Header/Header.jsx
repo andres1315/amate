@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { Navbar } from 'flowbite-react'
-import logo from '../../assets/Logo.png'
+import logo from '../../assets/logo.png'
 const Header = () => {
   return (
     <Navbar fluid={true} rounded={true} className="pt-2 bg-white">
