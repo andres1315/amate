@@ -1,7 +1,7 @@
-const HomeDashboard = () =>{
+const HomeDashboard = () => {
   return (
     <>
-    Aqui va el home deldashboar
+      Aqui va el home deldashboar
     </>
   )
 }
