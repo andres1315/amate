@@ -1,11 +1,20 @@
 import { useState, Fragment, useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
-import { Bars3Icon, BookmarkSquareIcon, FireIcon, HomeIcon, InboxIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  Bars3Icon,
+  BookmarkSquareIcon,
+  FireIcon,
+  HomeIcon,
+  InboxIcon,
+  UserIcon,
+  XMarkIcon,
+  ArrowLeftOnRectangleIcon
+} from '@heroicons/react/24/outline'
 import { dashboardNavigation } from '../data/dashboardModule'
 import imgAmate from '../assets//logo.png'
 import logoAmate from '../assets/logofull.png'
-import { HomeDashboard } from './dashboard/HomeDashboard'
+import { HomeDashboard } from './dashboard/HomeDashboard/HomeDashboard'
 import { Income } from './dashboard/incomes/Income'
 import { Payments } from './dashboard/Payments'
 import { CashFlow } from './dashboard/CashFlow'
@@ -33,17 +42,26 @@ export const Dashboard = () => {
   }
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('loggedUser'))
+    const user = JSON.parse(window.localStorage.getItem('loggedUser'))
     setUserLogged(user)
     if (!user) navigate('/login')
   }, [])
+
+  const handleExitApp = () => {
+    window.localStorage.removeItem('loggedUser')
+    navigate('/login')
+  }
 
   if (userLogged) {
     return (
       <>
         <div className='flex h-screen'>
           <Transition.Root show={mobileMenuOpen} as={Fragment}>
-            <Dialog as='div' className='relative z-40 lg:hidden' onClose={setMobileMenuOpen}>
+            <Dialog
+              as='div'
+              className='relative z-40 lg:hidden'
+              onClose={setMobileMenuOpen}
+            >
               <Transition.Child
                 as={Fragment}
                 enter='transition-opacity ease-linear duration-300'
@@ -83,7 +101,10 @@ export const Dashboard = () => {
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <span className='sr-only'>Close sidebar</span>
-                          <XMarkIcon className='h-6 w-6 text-white' aria-hidden='true' />
+                          <XMarkIcon
+                            className='h-6 w-6 text-white'
+                            aria-hidden='true'
+                          />
                         </button>
                       </div>
                     </Transition.Child>
@@ -101,7 +122,6 @@ export const Dashboard = () => {
                             const IconMap = componentMappingIcon[item.icon]
 
                             return (
-
                               <a
                                 key={item.name}
                                 href={item.href}
@@ -113,7 +133,6 @@ export const Dashboard = () => {
                                 />
                                 {item.name}
                               </a>
-
                             )
                           })}
                         </div>
@@ -123,10 +142,16 @@ export const Dashboard = () => {
                       <a href='#' className='group block flex-shrink-0'>
                         <div className='flex items-center'>
                           <div>
-                            <img className='inline-block h-12 w-12 rounded-full' src={imgAmate} alt='' />
+                            <img
+                              className='inline-block h-12 w-12 rounded-full'
+                              src={imgAmate}
+                              alt=''
+                            />
                           </div>
                           <div className='ml-3'>
-                            <p className='text-base font-medium text-gray-700 group-hover:text-gray-900'>{userLogged.name}</p>
+                            <p className='text-base font-medium text-gray-700 group-hover:text-gray-900'>
+                              {userLogged.name}
+                            </p>
                             <p className='text-sm font-medium text-gray-500 group-hover:text-gray-700'>
                               Account Settings
                             </p>
@@ -147,15 +172,19 @@ export const Dashboard = () => {
           <div className='hidden lg:flex lg:flex-shrink-0'>
             <div className='flex w-20 flex-col'>
               <div className='flex min-h-0 flex-1 flex-col   bg-rose-600'>
-                <div className='flex items-center justify-center bg-rose-600 py-4'>
+                <div className='flex items-center justify-center bg-rose-600 py-4 '>
                   <img
-                    className='h-12 w-auto'
+                    className='h-12 w-auto hover:cursor-pointer'
                     src={logoAmate}
-                    alt='Your Company'
+                    alt='Amate'
+                    onClick={() => setMenuShow(<HomeDashboard />)}
                   />
                 </div>
                 <div className='flex-1 overflow-auto'>
-                  <nav aria-label='Sidebar' className='flex flex-col items-center space-y-3 py-3  overflow-y-auto overflow-x-hidden'>
+                  <nav
+                    aria-label='Sidebar'
+                    className='flex flex-col items-center space-y-3 py-3  overflow-y-auto overflow-x-hidden '
+                  >
                     {dashboardNavigation.map((item) => {
                       const IconMap = componentMappingIcon[item.icon]
                       const ComponentDashboard = componentDashboard[item.page]
@@ -163,12 +192,13 @@ export const Dashboard = () => {
                         <div
                           key={item.name}
                           href={item.href}
-                          className='flex flex-col items-center rounded-lg p-4 text-white hover:bg-rose-700'
+                          className='flex flex-col items-center rounded-lg p-4 text-white hover:bg-rose-700 hover:cursor-pointer'
                           onClick={() => setMenuShow(<ComponentDashboard />)}
                         >
                           <IconMap className='h-6 w-6' aria-hidden='true' />
-                          <span className='font-normal capitalize truncate text-xs'>{item.name}</span>
-
+                          <span className='font-normal capitalize truncate text-xs'>
+                            {item.name}
+                          </span>
                         </div>
                       )
                     })}
@@ -176,10 +206,14 @@ export const Dashboard = () => {
                 </div>
                 <div className='flex flex-shrink-0 pb-5'>
                   <a href='#' className='w-full flex-shrink-0'>
-                    <img className='mx-auto block h-10 w-10 rounded-full' src={imgAmate} alt='' />
-                    <div className='sr-only'>
-                      <p>{userLogged?.name}</p>
-                      <p>Account settings</p>
+                    <div className='flex flex-col items-center rounded-lg p-4 text-white hover:bg-rose-700' onClick={() => handleExitApp()}>
+                      <ArrowLeftOnRectangleIcon
+                        className='h-6 w-6'
+                        aria-hidden='true'
+                      />
+                      <span className='font-normal capitalize truncate text-xs'>
+                        Salir
+                      </span>
                     </div>
                   </a>
                 </div>
@@ -218,7 +252,6 @@ export const Dashboard = () => {
               >
                 {menuShow}
               </section>
-
             </main>
           </div>
         </div>

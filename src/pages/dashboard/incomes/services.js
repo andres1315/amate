@@ -1,9 +1,10 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 const onSubmit = data => {
+  const { token } = JSON.parse(window.localStorage.getItem('loggedUser'))
   axios.post('http://localhost:3010/api/incomes', data,
     {
-      headers: { authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { authorization: `Bearer ${token}` }
     })
     .then(res => {
       if (res.status === 201) {
@@ -33,7 +34,11 @@ const onSubmit = data => {
 }
 
 const getIncomes = () => {
-  return axios.get('http://localhost:3010/api/incomes')
+  const { token } = JSON.parse(window.localStorage.getItem('loggedUser'))
+  return axios.get('http://localhost:3010/api/incomes',
+    {
+      headers: { authorization: `Bearer ${token}` }
+    })
     .then(res => {
       if (res.status === 200) return res.data.data
     })

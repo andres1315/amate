@@ -6,7 +6,7 @@ export const dashboardNavigation = [
     icon: 'BookmarkSquareIcon'
   },
   {
-    name: 'pagos',
+    name: 'Egresos',
     page: 'Payments',
     icon: 'FireIcon'
   },

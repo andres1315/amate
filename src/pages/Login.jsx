@@ -3,10 +3,16 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import { useEffect } from 'react'
 
 export const Login = () => {
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
+    if (token) navigate('/dashboard')
+  }, [])
 
   const onSubmit = async (data) => {
     axios
