@@ -1,29 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSackDollar, faDollarSign, faMoneyBillTrendUp, faSackXmark } from '@fortawesome/free-solid-svg-icons'
 import { formatterPeso } from '../../../utils/utils'
-import { getAllIncomes } from './services'
+import { getIncomes } from '../incomes/services.js'
 import { useEffect, useState } from 'react'
-
+import { getExpenditures } from '../Expenditures/services.js'
+import { getIncomesMonth, getExpendituresCurrentMonth } from './services.js'
 const initialValueCards = [
-  { name: 'Ingresos', icon: <FontAwesomeIcon icon={faMoneyBillTrendUp} />, value: 16, bgColor: 'bg-green-400 text-xl' },
-  { name: 'Egresos', icon: <FontAwesomeIcon icon={faSackXmark} />, value: 16, bgColor: 'bg-red-600 text-xl' },
-  { name: 'Saldo pendiente', icon: <FontAwesomeIcon icon={faDollarSign} />, value: 8, bgColor: 'bg-purple-600 text-xl' },
-  { name: 'Caja', icon: <FontAwesomeIcon icon={faSackDollar} />, value: 12, bgColor: 'bg-rose-600 text-xl' }
+  { id: 'incomes', name: 'Ingresos Mes Actual', icon: <FontAwesomeIcon icon={faMoneyBillTrendUp} />, value: 16, bgColor: 'bg-green-400 text-xl' },
+  { id: 'expenditures', name: 'Egresos Mes Actual', icon: <FontAwesomeIcon icon={faSackXmark} />, value: 16, bgColor: 'bg-red-600 text-xl' },
+  { id: 'balance', name: 'Balance Mensual', icon: <FontAwesomeIcon icon={faDollarSign} />, value: 8, bgColor: 'bg-purple-600 text-xl' },
+  { id: 'cashflow', name: 'Caja', icon: <FontAwesomeIcon icon={faSackDollar} />, value: 12, bgColor: 'bg-rose-600 text-xl' }
 ]
 
 export const HomeDashboard = () => {
   const [incomes, setIcomes] = useState(0)
+  const [incomesCurrentMonth, setIcomesCurrentMonth] = useState(0)
   const [expenditures, setExpenditures] = useState(0)
+  const [expendituresCurrentMonth, setExpendituresCurrentMonth] = useState(0)
   const [dataCards, setDataCards] = useState(initialValueCards)
+
   useEffect(() => {
-    getAllIncomes().then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getIncomes().then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getIncomesMonth().then((res) => setIcomesCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getExpenditures().then(res => setExpenditures(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getExpendituresCurrentMonth().then(res => setExpendituresCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
   }, [])
 
   useEffect(() => {
     const newDataCards = [...dataCards]
-    newDataCards.find((item) => item.name === 'Ingresos').value = incomes
+    newDataCards.find((item) => item.id === 'incomes').value = incomesCurrentMonth
+    newDataCards.find((item) => item.id === 'expenditures').value = expendituresCurrentMonth
+    newDataCards.find((item) => item.id === 'balance').value = incomesCurrentMonth - expendituresCurrentMonth
+    newDataCards.find((item) => item.id === 'cashflow').value = incomes - expenditures
     setDataCards(newDataCards)
-  }, [incomes, expenditures])
+  }, [incomes, expenditures, expendituresCurrentMonth, incomesCurrentMonth])
   return (
     <>
 

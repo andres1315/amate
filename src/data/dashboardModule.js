@@ -7,7 +7,7 @@ export const dashboardNavigation = [
   },
   {
     name: 'Egresos',
-    page: 'Payments',
+    page: 'Expenditures',
     icon: 'FireIcon'
   },
   {

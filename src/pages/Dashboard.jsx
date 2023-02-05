@@ -15,8 +15,8 @@ import { dashboardNavigation } from '../data/dashboardModule'
 import imgAmate from '../assets//logo.png'
 import logoAmate from '../assets/logofull.png'
 import { HomeDashboard } from './dashboard/HomeDashboard/HomeDashboard'
+import { Expenditures } from './dashboard/Expenditures/Expenditures'
 import { Income } from './dashboard/incomes/Income'
-import { Payments } from './dashboard/Payments'
 import { CashFlow } from './dashboard/CashFlow'
 import { Order } from './dashboard/Order'
 
@@ -29,7 +29,7 @@ export const Dashboard = () => {
   const componentDashboard = {
     HomeDashboard,
     Income,
-    Payments,
+    Expenditures,
     CashFlow,
     Order
   }

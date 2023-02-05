@@ -1,8 +1,8 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 const { token } = JSON.parse(window.localStorage.getItem('loggedUser'))
-const onSubmit = data => {
-  axios.post('http://localhost:3010/api/incomes', data,
+const onSubmit = (data) => {
+  axios.post('http://localhost:3010/api/expenditures', data,
     {
       headers: { authorization: `Bearer ${token}` }
     })
@@ -10,7 +10,7 @@ const onSubmit = data => {
       if (res.status === 201) {
         return Swal.fire(
           'Atención!',
-          'Ingreso registrado con éxito!',
+          'Pago registrado con éxito!',
           'success'
         )
       }
@@ -26,32 +26,30 @@ const onSubmit = data => {
       } else {
         return Swal.fire(
           'Atención!',
-          'Se presento un error al registrar el ingreso!',
+          'Se presento un error al registrar el Pago!',
           'error'
         )
       }
     })
 }
 
-const getIncomes = () => {
-  return axios.get('http://localhost:3010/api/incomes',
-    {
-      headers: { authorization: `Bearer ${token}` }
-    })
-    .then(res => {
-      if (res.status === 200) return res.data.data
+const getExpenditures = () => {
+  return axios.get('http://localhost:3010/api/expenditures', {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        return res.data.data
+      }
     })
     .catch(err => {
       console.log(err)
-      return Swal.fire(
-        'Atención!',
-        'Se presento un error al consultar los ingresos!',
-        'error'
-      )
+      throw new Error('Se presento un error al consultar los pagos!')
     })
 }
-
 export {
   onSubmit,
-  getIncomes
+  getExpenditures
 }
