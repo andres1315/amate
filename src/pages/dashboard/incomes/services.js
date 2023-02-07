@@ -2,7 +2,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
 const onSubmit = data => {
-  axios.post('http://localhost:3010/api/incomes', data,
+  axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`, data,
     {
       headers: { authorization: `Bearer ${token}` }
     })
@@ -34,7 +34,7 @@ const onSubmit = data => {
 }
 
 const getIncomes = () => {
-  return axios.get('http://localhost:3010/api/incomes',
+  return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`,
     {
       headers: { authorization: `Bearer ${token}` }
     })

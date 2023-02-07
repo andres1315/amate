@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getExpenditures } from '../Expenditures/services'
 const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
 const getIncomesMonth = async () => {
-  return axios.get('http://localhost:3010/api/incomes/currentMonth', {
+  return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes/currentMonth`, {
     headers: {
       authorization: `Bearer ${token}`
     }
@@ -17,7 +17,7 @@ const getIncomesMonth = async () => {
 }
 
 const getExpendituresCurrentMonth = async () => {
-  return axios.get('http://localhost:3010/api/expenditures/currentMonth', {
+  return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/expenditures/currentMonth`, {
     headers: {
       authorization: `Bearer ${token}`
     }
