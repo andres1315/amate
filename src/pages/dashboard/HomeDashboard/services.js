@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getExpenditures } from '../Expenditures/services'
-const { token } = JSON.parse(window.localStorage.getItem('loggedUser'))
+const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
 const getIncomesMonth = async () => {
   return axios.get('http://localhost:3010/api/incomes/currentMonth', {
     headers: {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
-const { token } = JSON.parse(window.localStorage.getItem('loggedUser'))
+const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
 const onSubmit = data => {
   axios.post('http://localhost:3010/api/incomes', data,
     {

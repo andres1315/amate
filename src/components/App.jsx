@@ -2,15 +2,13 @@
 import './App.css'
 import { BrowserRouter } from 'react-router-dom'
 import { RoutesList } from './Routes'
-import {Layouts} from './Layout/Layout'
+import { Layouts } from './Layout/Layout'
 
-
-
-function App() {
+function App () {
   return (
     <BrowserRouter>
       <Layouts>
-        <RoutesList/>
+        <RoutesList />
       </Layouts>
     </BrowserRouter>
   )
