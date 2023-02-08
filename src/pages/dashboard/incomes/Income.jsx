@@ -29,7 +29,7 @@ const Income = () => {
   return (
     <>
       <div className='grid grid-cols-12 gap-6'>
-        <div className='sm:col-span-12 md:col-span-2 mx-1 md:border-r-2 md:h-screen px-2'>
+        <div className='col-span-12 md:col-span-2 mx-1 md:border-r-2 md:h-screen px-2 overflow-auto'>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='mt-6'>
               <FormIcon type='text' label='Cliente' placeholder='Nombre del Cliente' register={register('customer', { required: 'Ingrese Nombre del Cliente' })}>
@@ -71,8 +71,8 @@ const Income = () => {
             </div>
           </form>
         </div>
-        <div className='sm:col-span-12 md:col-span-10'>
-          <div className='mt-8 hidden sm:block'>
+        <div className='col-span-12 md:col-span-10 md:flex '>
+          <div className='mt-8   md:flex-1'>
             <div className='inline-block min-w-full border-b border-gray-200 align-middle' />
             <BTable head={headTableIncomes} body={income} nameTable='name' />
           </div>

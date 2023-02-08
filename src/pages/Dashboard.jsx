@@ -52,6 +52,11 @@ export const Dashboard = () => {
     navigate('/login')
   }
 
+  const handleClickMenu = (MenuShow) => {
+    setMenuShow(<MenuShow />)
+    setMobileMenuOpen(false)
+  }
+
   if (userLogged) {
     return (
       <>
@@ -114,18 +119,21 @@ export const Dashboard = () => {
                           className='h-12 w-auto'
                           src={logoAmate}
                           alt='Your Company'
+                          onClick={() => handleClickMenu(<HomeDashboard />)}
+
                         />
                       </div>
                       <nav aria-label='Sidebar' className='mt-5'>
                         <div className='space-y-1 px-2'>
                           {dashboardNavigation.map((item) => {
                             const IconMap = componentMappingIcon[item.icon]
-
+                            const ComponentDashboard = componentDashboard[item.page]
                             return (
                               <a
                                 key={item.name}
                                 href={item.href}
                                 className='group flex items-center rounded-md p-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                onClick={() => handleClickMenu(ComponentDashboard)}
                               >
                                 <IconMap
                                   className='mr-4 h-6 w-6 text-gray-400 group-hover:text-gray-500'
@@ -230,6 +238,8 @@ export const Dashboard = () => {
                     className='h-12 w-auto'
                     src={logoAmate}
                     alt='Your Company'
+                    onClick={() => setMenuShow(<HomeDashboard />)}
+
                   />
                 </div>
                 <div>
@@ -245,10 +255,10 @@ export const Dashboard = () => {
               </div>
             </div>
 
-            <main className='flex flex-1 overflow-hidden'>
+            <main className='flex overflow-hidden'>
               <section
                 aria-labelledby='primary-heading'
-                className='flex h-full min-w-0 flex-1 flex-col overflow-y-auto lg:order-last'
+                className='flex h-full min-w-0 md:flex-1  overflow-y-auto'
               >
                 {menuShow}
               </section>
