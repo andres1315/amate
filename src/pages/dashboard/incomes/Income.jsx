@@ -1,28 +1,58 @@
 import { FormIcon } from '../../../components/FormIcon/FormIcon'
 import { UserIcon, CurrencyDollarIcon, ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid'
-import { onSubmit, getIncomes } from './services'
+import { getIncomes } from './services'
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { BTable } from '../../../components/Tables/Table.jsx'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const Income = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm()
+  const { register, handleSubmit, formState: { errors }, reset } = useForm()
   const [income, setIncome] = useState([])
+  const [token, setToken] = useState('')
 
   useEffect(() => {
+    const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
+    setToken(token)
     getIncomes().then(data => {
       setIncome(data)
     })
   }, [])
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset()
-      getIncomes().then(data => {
-        setIncome(data)
+  const onSubmit = data => {
+    return axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`, data,
+      {
+        headers: { authorization: `Bearer ${token}` }
       })
-    }
-  }, [isSubmitSuccessful])
+      .then(res => {
+        if (res.status === 201) {
+          Swal.fire(
+            'Atención!',
+            'Ingreso registrado con exito!',
+            'success'
+          )
+          reset()
+          return getIncomes().then(data => setIncome(data))
+        }
+      })
+      .catch(err => {
+        console.log(err.response)
+        if (err.response.status === 401) {
+          return Swal.fire(
+            'Atención!',
+            err.response.data.message,
+            'error'
+          )
+        } else {
+          return Swal.fire(
+            'Atención!',
+            'Se presento un error al registrar el ingreso!',
+            'error'
+          )
+        }
+      })
+  }
 
   const headTableIncomes = ['Cliente', 'Valor', 'Descripcion', 'Fecha']
 
