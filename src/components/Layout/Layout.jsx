@@ -1,31 +1,30 @@
 import { useLocation } from 'react-router-dom'
-import {Header} from '../Header/Header'
-const Empty=({children})=>{
-  return(
+import { Header } from '../Header/Header'
+const Empty = ({ children }) => {
+  return (
     <>
       {children}
     </>
   )
 }
 
-const WithHeader=({children})=>{
-  return(
+const WithHeader = ({ children }) => {
+  return (
     <>
-      <Header/>
+      <Header />
       {children}
     </>
   )
 }
 
-
-const Layouts = ({children})=>{
+const Layouts = ({ children }) => {
   const location = useLocation()
-  const {pathname}={...location}
-  console.log({location})
+  const { pathname } = { ...location }
+  console.log({ location })
 
-  if('/login'===pathname || '/dashboard' === pathname){
+  if (pathname === '/login' || pathname === '/dashboard') {
     return <Empty>{children}</Empty>
-  }else{
+  } else {
     return (
       <WithHeader>
         {children}
@@ -34,4 +33,4 @@ const Layouts = ({children})=>{
   }
 }
 
-export {Layouts}
+export { Layouts }

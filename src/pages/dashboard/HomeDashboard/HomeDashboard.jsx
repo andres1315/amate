@@ -37,7 +37,7 @@ export const HomeDashboard = () => {
   return (
     <>
 
-      <div className='mx-8'>
+      <div className='mx-8  md:flex-1'>
         <ul role='list' className='mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4'>
           {dataCards.map((project) => (
             <li key={project.name} className='col-span-1 flex rounded-md shadow-sm'>

@@ -17,7 +17,7 @@ import logoAmate from '../assets/logofull.png'
 import { HomeDashboard } from './dashboard/HomeDashboard/HomeDashboard'
 import { Expenditures } from './dashboard/Expenditures/Expenditures'
 import { Income } from './dashboard/incomes/Income'
-import { CashFlow } from './dashboard/CashFlow'
+import { CashFlow } from './dashboard/CashFlow/CashFlow'
 import { Order } from './dashboard/Order'
 
 export const Dashboard = () => {
@@ -119,7 +119,7 @@ export const Dashboard = () => {
                           className='h-12 w-auto'
                           src={logoAmate}
                           alt='Your Company'
-                          onClick={() => handleClickMenu(<HomeDashboard />)}
+                          onClick={() => handleClickMenu(HomeDashboard)}
 
                         />
                       </div>
@@ -258,7 +258,7 @@ export const Dashboard = () => {
             <main className='flex overflow-hidden'>
               <section
                 aria-labelledby='primary-heading'
-                className='flex h-full min-w-0 md:flex-1  overflow-y-auto'
+                className='flex h-full w-full md:flex-1  overflow-y-auto'
               >
                 {menuShow}
               </section>

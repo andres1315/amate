@@ -15,3 +15,8 @@ export const formatterPeso = new Intl.NumberFormat('es-CO', {
   currency: 'COP',
   minimumFractionDigits: 0
 })
+
+export function CloseSession () {
+  window.localStorage.removeItem('loggedUser')
+  window.location.href = '/login'
+}

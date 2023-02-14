@@ -20,14 +20,16 @@ export const Login = () => {
         username: data.user,
         password: data.password
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.status === 200) {
           const { data } = res.data
-          window.localStorage.setItem('loggedUser', JSON.stringify({ name: data.name, token: data.token, username: data.username }))
+          await window.localStorage.setItem('loggedUser', JSON.stringify({ name: data.name, token: data.token, username: data.username }))
+          console.log(window.localStorage.getItem('loggedUser'))
           navigate('/dashboard')
         }
       })
       .catch((err) => {
+        console.log(err)
         if (err.response.status === 401) {
           Swal.fire({
             title: 'Atención!',
