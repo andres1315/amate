@@ -2,7 +2,7 @@
 export const FormIcon = ({ label, placeholder, children, register, type }) => {
   return (
     <>
-      <label htmlFor='customer' className='block text-sm font-medium text-rose-700'>
+      <label htmlFor='customer' className='flex text-sm font-medium text-rose-700'>
         {label}
       </label>
       <div className='relative mt-1 rounded-md shadow-sm'>

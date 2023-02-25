@@ -3,14 +3,16 @@ import './App.css'
 import { BrowserRouter } from 'react-router-dom'
 import { RoutesList } from './Routes'
 import { Layouts } from './Layout/Layout'
-
+import { UserContextProvider } from '../context/UserContext'
 function App () {
   return (
-    <BrowserRouter>
-      <Layouts>
-        <RoutesList />
-      </Layouts>
-    </BrowserRouter>
+    <UserContextProvider>
+      <BrowserRouter>
+        <Layouts>
+          <RoutesList />
+        </Layouts>
+      </BrowserRouter>
+    </UserContextProvider>
   )
 }
 

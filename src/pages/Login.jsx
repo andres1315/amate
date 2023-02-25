@@ -4,15 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useEffect } from 'react'
-
+import { useUser } from '../hooks/useUser'
 export const Login = () => {
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
+  const { login, isLogged } = useUser()
 
   useEffect(() => {
-    const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
-    if (token) navigate('/dashboard')
-  }, [])
+    if (isLogged) navigate('/dashboard')
+  }, [isLogged])
 
   const onSubmit = async (data) => {
     axios
@@ -20,11 +20,11 @@ export const Login = () => {
         username: data.user,
         password: data.password
       })
-      .then(async (res) => {
+      .then((res) => {
         if (res.status === 200) {
-          const { data } = res.data
-          await window.localStorage.setItem('loggedUser', JSON.stringify({ name: data.name, token: data.token, username: data.username }))
-          console.log(window.localStorage.getItem('loggedUser'))
+          const { data: user } = res.data
+
+          login({ user })
           navigate('/dashboard')
         }
       })

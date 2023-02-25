@@ -1,5 +1,12 @@
 import { formatDate, formatterPeso } from '../../utils/utils'
-export const BTable = ({ head, body, nameTable = '' }) => {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+
+const iconsButtons = {
+  edit: faPenToSquare,
+  delete: faTrashAlt
+}
+export const BTable = ({ head, body, nameTable = '', actions = [] } = {}) => {
   return (
     <>
       <div className='flex flex-col'>
@@ -27,6 +34,27 @@ export const BTable = ({ head, body, nameTable = '' }) => {
                       <td>{formatterPeso.format(item.value)}</td>
                       <td>{item.description || '-'}</td>
                       <td>{formatDate(item.createdAt)}</td>
+                      {actions.length > 0 && (
+                        <>
+                          <td className='flex justify-center gap-2'>
+                            {actions.map((action) => {
+                              return (
+                                <div key={action.text}>
+                                  <button
+                                    type='button'
+                                    onClick={() => action.action(item)}
+                                    className={`inline-flex  items-center px-2 py-1 border border-transparent text-xs leading-4 font-medium rounded-md text-white ${action.color} focus:outline-none focus:ring-2 focus:ring-offset-2 `}
+                                  >
+                                    <FontAwesomeIcon icon={iconsButtons[action.icon]} className='mr-1' />
+
+                                    {action.text}
+                                  </button>
+                                </div>
+                              )
+                            })}
+                          </td>
+                        </>
+                      )}
                     </tr>
                   ))}
                 </tbody>

@@ -20,3 +20,10 @@ export function CloseSession () {
   window.localStorage.removeItem('loggedUser')
   window.location.href = '/login'
 }
+
+export async function getToken () {
+  return new Promise((resolve, reject) => {
+    const user = window.localStorage.getItem('loggedUser') || null
+    user ? resolve(user) : reject(new Error('No hay usuario'))
+  })
+}

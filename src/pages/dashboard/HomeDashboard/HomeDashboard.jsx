@@ -5,6 +5,7 @@ import { getIncomes } from '../incomes/services.js'
 import { useEffect, useState } from 'react'
 import { getExpenditures } from '../Expenditures/services.js'
 import { getIncomesMonth, getExpendituresCurrentMonth } from './services.js'
+import { useUser } from '../../../hooks/useUser'
 const initialValueCards = [
   { id: 'incomes', name: 'Ingresos Mes Actual', icon: <FontAwesomeIcon icon={faMoneyBillTrendUp} />, value: 16, bgColor: 'bg-green-400 text-xl' },
   { id: 'expenditures', name: 'Egresos Mes Actual', icon: <FontAwesomeIcon icon={faSackXmark} />, value: 16, bgColor: 'bg-red-600 text-xl' },
@@ -18,12 +19,13 @@ export const HomeDashboard = () => {
   const [expenditures, setExpenditures] = useState(0)
   const [expendituresCurrentMonth, setExpendituresCurrentMonth] = useState(0)
   const [dataCards, setDataCards] = useState(initialValueCards)
+  const { getToken } = useUser()
 
   useEffect(() => {
-    getIncomes().then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
-    getIncomesMonth().then((res) => setIcomesCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
-    getExpenditures().then(res => setExpenditures(res.reduce((sum, obj) => sum + obj.value, 0)))
-    getExpendituresCurrentMonth().then(res => setExpendituresCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getIncomes({ token: getToken }).then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getIncomesMonth({ token: getToken }).then((res) => setIcomesCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getExpenditures({ token: getToken }).then(res => setExpenditures(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getExpendituresCurrentMonth({ token: getToken }).then(res => setExpendituresCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
   }, [])
 
   useEffect(() => {

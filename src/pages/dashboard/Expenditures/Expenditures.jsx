@@ -1,29 +1,59 @@
 import { useForm } from 'react-hook-form'
-import { onSubmit, getExpenditures } from './services'
+import { getExpenditures } from './services'
 import { FormIcon } from '../../../components/FormIcon/FormIcon'
 import { UserIcon, CurrencyDollarIcon, ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid'
 import { BTable } from '../../../components/Tables/Table'
 import { useState, useEffect } from 'react'
+import { useUser } from '../../../hooks/useUser'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 
 const headTable = ['Proveedor', 'Valor', 'Concepto', 'Fecha']
 export const Expenditures = () => {
   const [expenditures, setExpenditures] = useState([])
-  const { register, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm()
-
+  const { register, handleSubmit, formState: { errors }, reset } = useForm()
+  const { getToken } = useUser()
   useEffect(() => {
-    getExpenditures().then(data => {
+    getExpenditures({ token: getToken }).then(data => {
       setExpenditures(data)
     })
   }, [])
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset()
-      getExpenditures().then(data => {
-        setExpenditures(data)
+  const onSubmit = async (data) => {
+    const { getToken } = useUser()
+    axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/expenditures`, data,
+      {
+        headers: { authorization: `Bearer ${getToken}` }
       })
-    }
-  }, [isSubmitSuccessful])
+      .then(res => {
+        if (res.status === 201) {
+          getExpenditures({ token: getToken }).then(data => {
+            setExpenditures(data)
+          })
+          return Swal.fire(
+            'Atención!',
+            'Pago registrado con éxito!',
+            'success'
+          )
+        }
+      })
+      .catch(err => {
+        console.log(err.response)
+        if (err.response.status === 401) {
+          return Swal.fire(
+            'Atención!',
+            err.response.data.message,
+            'error'
+          )
+        } else {
+          return Swal.fire(
+            'Atención!',
+            'Se presento un error al registrar el Pago!',
+            'error'
+          )
+        }
+      })
+  }
   return (
     <>
       <div className='grid grid-cols-12 gap-6'>

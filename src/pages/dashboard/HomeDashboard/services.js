@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { getExpenditures } from '../Expenditures/services'
-const { token } = JSON.parse(window.localStorage.getItem('loggedUser')) || {}
-const getIncomesMonth = async () => {
+
+const getIncomesMonth = async ({ token }) => {
   return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes/currentMonth`, {
     headers: {
       authorization: `Bearer ${token}`
@@ -16,7 +15,7 @@ const getIncomesMonth = async () => {
     })
 }
 
-const getExpendituresCurrentMonth = async () => {
+function getExpendituresCurrentMonth ({ token }) {
   return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/expenditures/currentMonth`, {
     headers: {
       authorization: `Bearer ${token}`
