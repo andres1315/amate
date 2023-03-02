@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSackDollar, faDollarSign, faMoneyBillTrendUp, faSackXmark } from '@fortawesome/free-solid-svg-icons'
 import { formatterPeso } from '../../../utils/utils'
-import { getIncomes } from '../incomes/services.js'
+import { getIncomes, getIncomesMonth } from '../incomes/services.js'
 import { useEffect, useState } from 'react'
-import { getExpenditures } from '../Expenditures/services.js'
-import { getIncomesMonth, getExpendituresCurrentMonth } from './services.js'
+import { getExpenditures, getExpendituresCurrentMonth } from '../Expenditures/services.js'
 import { useUser } from '../../../hooks/useUser'
 const initialValueCards = [
   { id: 'incomes', name: 'Ingresos Mes Actual', icon: <FontAwesomeIcon icon={faMoneyBillTrendUp} />, value: 16, bgColor: 'bg-green-400 text-xl' },
@@ -23,8 +22,8 @@ export const HomeDashboard = () => {
 
   useEffect(() => {
     getIncomes({ token: getToken }).then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
-    getIncomesMonth({ token: getToken }).then((res) => setIcomesCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
     getExpenditures({ token: getToken }).then(res => setExpenditures(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getIncomesMonth({ token: getToken }).then((res) => setIcomesCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
     getExpendituresCurrentMonth({ token: getToken }).then(res => setExpendituresCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
   }, [])
 

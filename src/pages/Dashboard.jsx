@@ -9,7 +9,8 @@ import {
   InboxIcon,
   UserIcon,
   XMarkIcon,
-  ArrowLeftOnRectangleIcon
+  ArrowLeftOnRectangleIcon,
+  UserPlusIcon
 } from '@heroicons/react/24/outline'
 import { dashboardNavigation } from '../data/dashboardModule'
 import imgAmate from '../assets//logo.png'
@@ -20,6 +21,7 @@ import { Income } from './dashboard/incomes/Income'
 import { CashFlow } from './dashboard/CashFlow/CashFlow'
 import { Order } from './dashboard/Order'
 import { useUser } from '../hooks/useUser'
+import { Customers } from './dashboard/customers/Customers'
 
 export const Dashboard = () => {
   const navigate = useNavigate()
@@ -32,14 +34,16 @@ export const Dashboard = () => {
     Income,
     Expenditures,
     CashFlow,
-    Order
+    Order,
+    Customers
   }
   const componentMappingIcon = {
     BookmarkSquareIcon,
     FireIcon,
     HomeIcon,
     InboxIcon,
-    UserIcon
+    UserIcon,
+    UserPlusIcon
   }
 
   useEffect(() => {

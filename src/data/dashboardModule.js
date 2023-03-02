@@ -19,5 +19,15 @@ export const dashboardNavigation = [
     name: 'Compras',
     page: 'Order',
     icon: 'InboxIcon'
+  },
+  {
+    name: 'Clientes',
+    page: 'Customers',
+    icon: 'UserPlusIcon'
+  },
+  {
+    name: 'Proveedores',
+    page: 'Suppliers',
+    icon: 'UserPlusIcon'
   }
 ]

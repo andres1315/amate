@@ -30,7 +30,7 @@ export const BTable = ({ head, body, nameTable = '', actions = [] } = {}) => {
                 <tbody className='divide-y divide-gray-100 bg-white'>
                   {body.map((item) => (
                     <tr key={item.id} className='text-center font-semibold text-sm'>
-                      <td>{item[nameTable]}</td>
+                      <td>{item.customer.name}</td>
                       <td>{formatterPeso.format(item.value)}</td>
                       <td>{item.description || '-'}</td>
                       <td>{formatDate(item.createdAt)}</td>

@@ -35,13 +35,13 @@ const Income = () => {
       userCreated: dataUser.id,
       description: data.description
     }
-    console.log(dataSubmit)
     if (!dataSubmit.customer) return Swal.fire('Atención!', 'Seleccione un cliente', 'error')
     return axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`, dataSubmit,
       {
         headers: { authorization: `Bearer ${getToken}` }
       })
       .then(res => {
+        console.log({ res })
         if (res.status === 201) {
           Swal.fire(
             'Atención!',
@@ -49,11 +49,11 @@ const Income = () => {
             'success'
           )
           reset()
-          return getIncomes().then(data => setIncome(data))
+          return getIncomes({ token: getToken }).then(data => setIncome(data))
         }
       })
       .catch(err => {
-        console.log(err.response)
+        console.log(err)
         if (err.response.status === 401) {
           return Swal.fire(
             'Atención!',
@@ -103,10 +103,9 @@ const Income = () => {
                 nameselect='customer'
                 label='Cliente'
                 control={control}
-                customer={options}
+                options={options}
               />
               {errors.customer && <p className='text-xs font-medium text-rose-700'>{errors.customer.message}</p>}
-
             </div>
             <div className='mt-2'>
               <FormIcon
@@ -120,7 +119,6 @@ const Income = () => {
               >
                 <CurrencyDollarIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
               </FormIcon>
-              {console.log({ errors })}
               {errors.value && <p className='text-xs font-medium text-rose-700'>{errors.value.message}</p>}
             </div>
             <div className='mt-2'>
