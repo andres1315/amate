@@ -17,12 +17,12 @@ import imgAmate from '../assets//logo.png'
 import logoAmate from '../assets/logofull.png'
 import { HomeDashboard } from './dashboard/HomeDashboard/HomeDashboard'
 import { Expenditures } from './dashboard/Expenditures/Expenditures'
-import { Income } from './dashboard/incomes/Income'
+import { Incomes } from './dashboard/incomes/Incomes'
 import { CashFlow } from './dashboard/CashFlow/CashFlow'
 import { Order } from './dashboard/Order'
 import { useUser } from '../hooks/useUser'
 import { Customers } from './dashboard/customers/Customers'
-
+import { Suppliers } from './dashboard/Suppliers/Suppliers'
 export const Dashboard = () => {
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -31,11 +31,12 @@ export const Dashboard = () => {
 
   const componentDashboard = {
     HomeDashboard,
-    Income,
+    Incomes,
     Expenditures,
     CashFlow,
     Order,
-    Customers
+    Customers,
+    Suppliers
   }
   const componentMappingIcon = {
     BookmarkSquareIcon,

@@ -8,7 +8,7 @@ const getExpenditures = async ({ token }) => {
   })
     .then((res) => {
       if (res.status === 200) {
-        return res.data
+        return res.data.data
       }
     })
     .catch(err => {
@@ -25,7 +25,7 @@ function getExpendituresCurrentMonth ({ token }) {
   })
     .then(res => {
       if (res.status === 200) {
-        return res.data
+        return res.data.data
       }
     })
     .catch(error => {
@@ -33,8 +33,23 @@ function getExpendituresCurrentMonth ({ token }) {
       throw new Error('Se presento un error al consultar los pagos!')
     })
 }
+function createExpenditureServices ({ token, data }) {
+  return axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/expenditures`, data, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      return res
+    })
+    .catch(error => {
+      console.log(error)
+      throw new Error('Se presento un error al registrar el pago!')
+    })
+}
 export {
 
   getExpenditures,
-  getExpendituresCurrentMonth
+  getExpendituresCurrentMonth,
+  createExpenditureServices
 }

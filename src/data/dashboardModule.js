@@ -2,7 +2,7 @@
 export const dashboardNavigation = [
   {
     name: 'ingresos',
-    page: 'Income',
+    page: 'Incomes',
     icon: 'BookmarkSquareIcon'
   },
   {

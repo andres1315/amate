@@ -1,74 +1,27 @@
 import { FormIcon } from '../../../components/FormIcon/FormIcon'
 import { UserIcon, CurrencyDollarIcon, ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid'
-import { getIncomes } from './services'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { BTable } from '../../../components/Tables/Table.jsx'
-import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Modal } from '../../../components/Modal/Modal'
-import { useUser } from '../../../hooks/useUser'
 import { SelectTw } from '../../../components/SelectDefault/SelectTw'
-import { getCustomers } from '../services/customers'
+import { useIncomes } from '../../../hooks/useIncomes'
+import { useCustomers } from '../../../hooks/useCustomers'
 
-const Income = () => {
+const Incomes = () => {
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm()
-  const [income, setIncome] = useState([])
-  const [customer, setCustomers] = useState([])
   const [modalEditIncomes, setModalEditIncomes] = useState(false)
   const [modalDeleteIncomes, setModalDeleteIncomes] = useState(false)
-  const { getToken, dataUser } = useUser()
+  const { searchAllIncomes, incomes, createIncome, error: errorIncomes } = useIncomes({ reset })
+  const { searchAllCustomers, error: errorCustomers, customers } = useCustomers()
 
+  if (errorIncomes) Swal.fire('Error', errorIncomes, 'error')
+  if (errorCustomers) Swal.fire('Error', errorCustomers, 'error')
   useEffect(() => {
-    getIncomes({ token: getToken }).then(data => {
-      setIncome(data)
-    })
-    getCustomers({ token: getToken }).then(data => {
-      setCustomers(data)
-    })
+    searchAllIncomes()
+    searchAllCustomers()
   }, [])
-
-  const onSubmit = data => {
-    const dataSubmit = {
-      customer: Number(data.customer),
-      value: Number(data.value),
-      userCreated: dataUser.id,
-      description: data.description
-    }
-    if (!dataSubmit.customer) return Swal.fire('Atención!', 'Seleccione un cliente', 'error')
-    return axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`, dataSubmit,
-      {
-        headers: { authorization: `Bearer ${getToken}` }
-      })
-      .then(res => {
-        console.log({ res })
-        if (res.status === 201) {
-          Swal.fire(
-            'Atención!',
-            'Ingreso registrado con exito!',
-            'success'
-          )
-          reset()
-          return getIncomes({ token: getToken }).then(data => setIncome(data))
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        if (err.response.status === 401) {
-          return Swal.fire(
-            'Atención!',
-            err.response.data.message,
-            'error'
-          )
-        } else {
-          return Swal.fire(
-            'Atención!',
-            'Se presento un error al registrar el ingreso!',
-            'error'
-          )
-        }
-      })
-  }
 
   const handleClickEdit = (income) => {
     const idIncome = income
@@ -91,12 +44,12 @@ const Income = () => {
       action: () => setModalDeleteIncomes(true)
     }
   ]
-  const options = customer.map(customer => ({ value: customer.id, label: customer.name }))
+  const options = customers.map(customer => ({ value: customer.id, label: customer.name }))
   return (
     <>
       <div className='grid grid-cols-12 gap-6'>
         <div className='col-span-12 md:col-span-2 mx-1 md:border-r-2 md:h-screen px-2 overflow-auto'>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(createIncome)}>
             <div className='mt-2'>
               <SelectTw
                 id='customer'
@@ -143,11 +96,11 @@ const Income = () => {
         </div>
         <div className='col-span-12 md:col-span-10 md:flex '>
           <div className='mt-2  md:flex-1'>
-            <BTable head={headTableIncomes} body={income} actions={btnActions} nameTable='name' />
+            <BTable head={headTableIncomes} body={incomes} actions={btnActions} nameTable='name' />
           </div>
         </div>
       </div>
-      {/*   <Modal open={modalEditIncomes} setOpen={setModalEditIncomes} size='xl' title='Editar Ingreso'>
+      {/* <Modal open={modalEditIncomes} setOpen={setModalEditIncomes} size='xl' title='Editar Ingreso'>
         <div className='grid grid-cols-12 gap-6'>
           <div className='col-span-12 mx-1  px-2 overflow-auto'>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -198,5 +151,5 @@ const Income = () => {
 }
 
 export {
-  Income
+  Incomes
 }

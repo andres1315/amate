@@ -1,79 +1,33 @@
 import { useForm } from 'react-hook-form'
-import { getExpenditures } from './services'
 import { FormIcon } from '../../../components/FormIcon/FormIcon'
 import { UserIcon, CurrencyDollarIcon, ChatBubbleBottomCenterTextIcon } from '@heroicons/react/20/solid'
-import { useState, useEffect } from 'react'
-import { useUser } from '../../../hooks/useUser'
+import { useEffect } from 'react'
 import Swal from 'sweetalert2'
-import axios from 'axios'
 import { TableListRadio } from '../../../components/Tables/TableListRadio'
 import { formatDate, formatterPeso } from '../../../utils/utils'
 import { SelectTw } from '../../../components/SelectDefault/SelectTw'
-import { getSuppliers } from '../Suppliers/services'
+import { useExpenditures } from '../../../hooks/useExpenditures'
+import { useSuppliers } from '../../../hooks/useSuppliers'
 
 const headTable = ['#', 'Proveedor', 'Valor', 'Concepto', 'Fecha']
 export const Expenditures = () => {
-  const [expenditures, setExpenditures] = useState([])
-  const [suppliers, setSuppliers] = useState([])
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm()
-  const { getToken, dataUser } = useUser()
+  const { searchAllExpenditures, expenditures, error: errorExpenditures, createExpenditures } = useExpenditures({ reset })
+  const { searchAllSuppliers, suppliers } = useSuppliers()
 
   useEffect(() => {
-    getExpenditures({ token: getToken }).then(data => {
-      setExpenditures(data)
-    })
-    getSuppliers({ token: getToken }).then(data => {
-      setSuppliers(data)
-    })
+    searchAllExpenditures()
+    searchAllSuppliers()
   }, [])
 
-  const onSubmit = async (data) => {
-    const dataExpenditure = {
-      supplier: 1,
-      value: Number(data.value),
-      description: data.description,
-      userCreated: dataUser.id
-    }
-    axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/expenditures`, dataExpenditure,
-      {
-        headers: { authorization: `Bearer ${getToken}` }
-      })
-      .then(res => {
-        if (res.status === 201) {
-          getExpenditures({ token: getToken }).then(data => {
-            setExpenditures(data)
-          })
-          reset()
-          return Swal.fire(
-            'Atención!',
-            'Pago registrado con éxito!',
-            'success'
-          )
-        }
-      })
-      .catch(err => {
-        console.log(err.response)
-        if (err.response.status === 401) {
-          return Swal.fire(
-            'Atención!',
-            err.response.data.message,
-            'error'
-          )
-        } else {
-          return Swal.fire(
-            'Atención!',
-            'Se presento un error al registrar el Pago!',
-            'error'
-          )
-        }
-      })
-  }
+  if (errorExpenditures) Swal.fire('error', errorExpenditures, 'error')
 
+  const supplierOption = suppliers?.map(supplier => ({ value: supplier.id, label: supplier.name }))
   return (
     <>
       <div className='grid grid-cols-12 gap-6'>
         <div className='col-span-12 md:col-span-2 mx-1 md:border-r-2 md:h-screen px-2 overflow-auto'>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(createExpenditures)}>
             <div className='mt-6'>
               <FormIcon type='text' label='Descripcion' placeholder='...' register={register('description', { required: 'Ingrese una descripcion' })}>
                 <ChatBubbleBottomCenterTextIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
@@ -99,9 +53,9 @@ export const Expenditures = () => {
                 id='supplier'
                 nameselect='supplier'
                 txtrequired='Seleccione un proveedor'
-                label='Cliente'
+                label='Proveedor'
                 control={control}
-                options={suppliers.map(supplier => ({ value: supplier.id, label: supplier.name }))}
+                options={supplierOption}
               />
               {errors.supplier && <p className='text-xs font-medium text-rose-700'>{errors.supplier.message}</p>}
             </div>

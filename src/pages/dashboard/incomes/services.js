@@ -7,7 +7,20 @@ const getIncomes = ({ token }) => {
       headers: { authorization: `Bearer ${token}` }
     })
     .then(res => {
-      if (res.status === 200) return res.data.data
+      if (res.status === 200) {
+        return res.data.data.map(income => (
+          {
+            createdAt: income.createdAt,
+            customer: {
+              id: income.customer.id,
+              name: income.customerDetail.name
+            },
+            description: income.description,
+            value: income.value,
+            id: income.id
+          }
+        )) || []
+      }
     })
     .catch(err => {
       console.log(err)
@@ -26,7 +39,7 @@ const getIncomesMonth = async ({ token }) => {
     }
   })
     .then(res => {
-      if (res.status === 200) return res.data
+      if (res.status === 200) return res.data.data
     })
     .catch(err => {
       console.log(err)
@@ -34,7 +47,22 @@ const getIncomesMonth = async ({ token }) => {
     })
 }
 
+const createIncomeService = ({ token, data }) => {
+  return axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`, data,
+    {
+      headers: { authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      return res
+    })
+    .catch(err => {
+      console.log(err)
+      throw new Error('Se presento un error al registrar el ingreso!')
+    })
+}
+
 export {
   getIncomes,
-  getIncomesMonth
+  getIncomesMonth,
+  createIncomeService
 }
