@@ -15,7 +15,7 @@ export function Customers () {
   }, [])
 
   const headTableIncomes = ['#', 'Cliente', 'Telefono']
-  if (!errorCustomers) Swal.fire('error', errorCustomers, 'error')
+  if (errorCustomers) Swal.fire('error', errorCustomers, 'error')
   return (
     <div className='grid grid-cols-12 gap-6'>
       <div className='col-span-12 md:col-span-2  mx-1 md:border-r-2 md:h-screen px-2 overflow-auto'>
@@ -70,7 +70,7 @@ export function Customers () {
                   {item.name}
                 </td>
                 <td className='px-6 py-1 whitespace-nowrap'>
-                  {item.phone}
+                  {item.number}
                 </td>
               </tr>
             ))}

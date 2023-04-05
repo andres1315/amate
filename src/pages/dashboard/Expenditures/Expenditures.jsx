@@ -28,7 +28,18 @@ export const Expenditures = () => {
       <div className='grid grid-cols-12 gap-6'>
         <div className='col-span-12 md:col-span-2 mx-1 md:border-r-2 md:h-screen px-2 overflow-auto'>
           <form onSubmit={handleSubmit(createExpenditures)}>
-            <div className='mt-6'>
+            <div className='mt-2'>
+              <SelectTw
+                id='supplier'
+                nameselect='supplier'
+                txtrequired='Seleccione un proveedor'
+                label='Proveedor'
+                control={control}
+                options={supplierOption}
+              />
+              {errors.supplier && <p className='text-xs font-medium text-rose-700'>{errors.supplier.message}</p>}
+            </div>
+            <div className='mt-2'>
               <FormIcon type='text' label='Descripcion' placeholder='...' register={register('description', { required: 'Ingrese una descripcion' })}>
                 <ChatBubbleBottomCenterTextIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
               </FormIcon>
@@ -48,17 +59,7 @@ export const Expenditures = () => {
               </FormIcon>
               {errors.value && <p className='text-xs font-medium text-rose-700'>{errors.value.message}</p>}
             </div>
-            <div className='mt-2'>
-              <SelectTw
-                id='supplier'
-                nameselect='supplier'
-                txtrequired='Seleccione un proveedor'
-                label='Proveedor'
-                control={control}
-                options={supplierOption}
-              />
-              {errors.supplier && <p className='text-xs font-medium text-rose-700'>{errors.supplier.message}</p>}
-            </div>
+
             <div className='mt-2 flex justify-center'>
               <button
                 type='submit'
@@ -70,11 +71,10 @@ export const Expenditures = () => {
           </form>
         </div>
         <div className='col-span-12 md:col-span-10 md:flex'>
-          <div className='mt-8 md:flex-1'>
-            <div className='inline-block min-w-full border-b border-gray-200 align-middle' />
+          <div className='mt-2 md:flex-1'>
             <TableListRadio head={headTable}>
               {expenditures.map((expenditure, index) => (
-                <tr key={index} className='text-center font-semibold text-sm'>
+                <tr key={expenditure.id} className='text-center font-semibold text-sm'>
                   <td className='px-6 py-1 whitespace-nowrap'>
                     <input
                       id='push-everything'
@@ -85,7 +85,7 @@ export const Expenditures = () => {
                     />
                   </td>
                   <td className='px-6 py-1 whitespace-nowrap '>
-                    {expenditure.supplier.name}
+                    {expenditure.supplierDetail.name}
                   </td>
                   <td className='px-6 py-1 whitespace-nowrap'>
                     {formatterPeso.format(expenditure.value)}

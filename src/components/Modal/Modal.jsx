@@ -11,7 +11,7 @@ const width = {
 export function Modal ({ open, setOpen, showIcon = false, size = 'sm', children, title = '' }) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as='div' className='relative z-10' onClose={setOpen}>
+      <Dialog as='div' className='relative z-10' onClose={() => setOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'
@@ -44,24 +44,25 @@ export function Modal ({ open, setOpen, showIcon = false, size = 'sm', children,
                       <CheckIcon className='h-6 w-6 text-green-600' aria-hidden='true' />
                     </div>
                   )}
-                  <div className='mt-3 text-center sm:mt-5'>
-                    <Dialog.Title as='h3' className='text-lg font-medium leading-6 text-gray-900'>
-                      {title}
-                    </Dialog.Title>
-                    <div className='mt-2'>
-                      {children}
+                  {!showIcon && (
+                    <div className='flex flex-col'>
+                      <Dialog.Title as='h3' className='text-lg font-bold leading-6 text-gray-800 capitalize flex  justify-between my-2 items-center'>
+                        {title}
+                        <button
+                          className='inline-flex w-auto justify-center rounded-md border border-transparent bg-rose-700 px-1 py-1 text-base font-medium text-white shadow-sm hover:bg-rose-800 focus:outline-none focus:ring-2 focus:ring-rose-700 focus:ring-offset-2 sm:text-sm'
+                          onClick={() => setOpen(false)}
+                        >Cerrar
+                        </button>
+                      </Dialog.Title>
+                      <hr className='text-rose-900 border-rose-600' />
                     </div>
+                  )}
+
+                  <div className='mt-2'>
+                    {children}
                   </div>
                 </div>
-                <div className='mt-5 sm:mt-6'>
-                  {/*  <button
-                    type='button'
-                    className='inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
-                    onClick={() => setOpen(false)}
-                  >
-                    Go back to dashboard
-                  </button> */}
-                </div>
+                <div className='mt-5 sm:mt-6' />
               </Dialog.Panel>
             </Transition.Child>
           </div>

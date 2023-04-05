@@ -61,8 +61,38 @@ const createIncomeService = ({ token, data }) => {
     })
 }
 
+const removeIncomeService = ({ token, id }) => {
+  return axios.delete(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes/${id}`,
+    {
+      headers: { authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      return res
+    })
+    .catch(err => {
+      console.log(err)
+      throw new Error('Se presento un error al eliminar el ingreso!')
+    })
+}
+
+const updateIncomeService = ({ token, id, data }) => {
+  return axios.patch(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes/${id}`, data,
+    {
+      headers: { authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      return res
+    })
+    .catch(err => {
+      console.log(err)
+      throw new Error('Se presento un error al actualizar el ingreso!')
+    })
+}
+
 export {
   getIncomes,
   getIncomesMonth,
-  createIncomeService
+  createIncomeService,
+  removeIncomeService,
+  updateIncomeService
 }

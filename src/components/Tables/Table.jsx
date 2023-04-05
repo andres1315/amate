@@ -2,9 +2,19 @@ import { formatDate, formatterPeso } from '../../utils/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
-const iconsButtons = {
-  edit: faPenToSquare,
-  delete: faTrashAlt
+const btnActions = {
+  edit: {
+    icon: faPenToSquare,
+    text: 'Editar',
+    color: 'bg-rose-600 hover:bg-rose-700 focus:ring-rose-500',
+    action: ''
+  },
+  delete: {
+    icon: faTrashAlt,
+    text: 'Eliminar',
+    color: 'bg-red-600 hover:bg-red-700 focus:ring-rose-500',
+    action: '() => setModalDeleteIncomes(true)'
+  }
 }
 export const BTable = ({ head, body, nameTable = '', actions = [] } = {}) => {
   return (
@@ -34,20 +44,20 @@ export const BTable = ({ head, body, nameTable = '', actions = [] } = {}) => {
                       <td>{formatterPeso.format(item.value)}</td>
                       <td>{item.description || '-'}</td>
                       <td>{formatDate(item.createdAt)}</td>
-                      {actions.length > 0 && (
+                      {Object.keys(actions).length > 0 && (
                         <>
                           <td className='flex justify-center gap-2'>
-                            {actions.map((action) => {
+                            {Object.entries(actions).map(([index, element]) => {
                               return (
-                                <div key={action.text}>
+                                <div key={btnActions[index].text}>
                                   <button
                                     type='button'
-                                    onClick={() => action.action(item)}
-                                    className={`inline-flex  items-center px-2 py-1 border border-transparent text-xs leading-4 font-medium rounded-md text-white ${action.color} focus:outline-none focus:ring-2 focus:ring-offset-2 `}
+                                    onClick={() => actions[index].action(item)}
+                                    className={`inline-flex  items-center px-2 py-1 border border-transparent text-xs leading-4 font-medium rounded-md text-white ${btnActions[index].color} focus:outline-none focus:ring-2 focus:ring-offset-2 `}
                                   >
-                                    <FontAwesomeIcon icon={iconsButtons[action.icon]} className='mr-1' />
+                                    <FontAwesomeIcon icon={btnActions[index].icon} className='mr-1' />
 
-                                    {action.text}
+                                    {btnActions[index].text}
                                   </button>
                                 </div>
                               )

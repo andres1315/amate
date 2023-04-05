@@ -48,7 +48,7 @@ export const Dashboard = () => {
   }
 
   useEffect(() => {
-    if (!isLogged) navigate('/login')
+    if (!isLogged || !dataUser?.name) navigate('/login')
   }, [])
 
   const handleClickMenu = (MenuShow) => {
@@ -105,7 +105,7 @@ export const Dashboard = () => {
                       >
                         <span className='sr-only'>Close sidebar</span>
                         <XMarkIcon
-                          className='h-6 w-6 text-white'
+                          className='h-6 w-6 text-brown-900'
                           aria-hidden='true'
                         />
                       </button>
@@ -155,7 +155,7 @@ export const Dashboard = () => {
                         </div>
                         <div className='ml-3'>
                           <p className='text-base font-medium text-gray-700 group-hover:text-gray-900'>
-                            {dataUser.name}
+                            {dataUser?.name}
                           </p>
                           <p className='text-sm font-medium text-gray-500 group-hover:text-gray-700'>
                             Account Settings
@@ -175,7 +175,7 @@ export const Dashboard = () => {
 
         {/* Static sidebar for desktop */}
         <div className='hidden lg:flex lg:flex-shrink-0'>
-          <div className='flex w-20 flex-col'>
+          <div className='flex w-24 flex-col'>
             <div className='flex min-h-0 flex-1 flex-col   bg-rose-600'>
               <div className='flex items-center justify-center bg-rose-600 py-4 '>
                 <img
@@ -188,7 +188,7 @@ export const Dashboard = () => {
               <div className='flex-1 overflow-auto'>
                 <nav
                   aria-label='Sidebar'
-                  className='flex flex-col items-center space-y-3 py-3  overflow-y-auto overflow-x-hidden '
+                  className='flex flex-col items-center space-y-3 py-3 px-1 overflow-y-auto overflow-x-hidden '
                 >
                   {dashboardNavigation.map((item) => {
                     const IconMap = componentMappingIcon[item.icon]
@@ -197,7 +197,7 @@ export const Dashboard = () => {
                       <div
                         key={item.name}
                         href={item.href}
-                        className='flex flex-col items-center rounded-lg p-4 text-white hover:bg-rose-700 hover:cursor-pointer'
+                        className='flex flex-col items-center w-full rounded-lg p-4 text-brown-900 hover:bg-rose-700 hover:text-white hover:cursor-pointer border  border-transparent hover:shadow-2xl'
                         onClick={() => setMenuShow(<ComponentDashboard />)}
                       >
                         <IconMap className='h-6 w-6' aria-hidden='true' />
@@ -211,7 +211,7 @@ export const Dashboard = () => {
               </div>
               <div className='flex flex-shrink-0 pb-5'>
                 <a href='#' className='w-full flex-shrink-0'>
-                  <div className='flex flex-col items-center rounded-lg p-4 text-white hover:bg-rose-700' onClick={() => logout()}>
+                  <div className='flex flex-col items-center rounded-lg p-4 text-brown-900 hover:bg-rose-700 hover:text-white' onClick={() => logout()}>
                     <ArrowLeftOnRectangleIcon
                       className='h-6 w-6'
                       aria-hidden='true'
@@ -241,7 +241,7 @@ export const Dashboard = () => {
               <div>
                 <button
                   type='button'
-                  className='-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md bg-rose-600 text-white hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
+                  className='-mr-3 inline-flex h-12 w-12 items-center justify-center rounded-md bg-rose-600 text-brown-900 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
                   onClick={() => setMobileMenuOpen(true)}
                 >
                   <span className='sr-only'>Open sidebar</span>

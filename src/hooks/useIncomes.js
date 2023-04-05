@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { createIncomeService, getIncomes } from '../pages/dashboard/Incomes/services'
+import { createIncomeService, getIncomes, removeIncomeService, updateIncomeService } from '../pages/dashboard/Incomes/services'
 import { useUser } from './useUser'
 import Swal from 'sweetalert2'
 export function useIncomes ({ reset }) {
   const [incomes, setIncomes] = useState([])
   const { getToken, dataUser } = useUser()
   const [error, setError] = useState(null)
-
+  const [incomeSelected, setIncomeSelected] = useState({})
+  const [modalEditIncome, setModalEditIncome] = useState(false)
   const searchAllIncomes = () => {
     setError(null)
     getIncomes({ token: getToken })
@@ -44,10 +45,98 @@ export function useIncomes ({ reset }) {
       })
   }
 
+  const removeIncome = (id) => {
+    removeIncomeService({ token: getToken, id })
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire(
+            'Atención!',
+            'Ingreso eliminado con exito!',
+            'success'
+          )
+          return searchAllIncomes()
+        }
+      })
+      .catch(err => {
+        setError(err.message)
+      })
+  }
+
+  const handlerClickRemoveIncome = () => {
+    setError(null)
+    if (!incomeSelected.id) {
+      return setError('Debe seleccionar un ingreso para Eliminar')
+    }
+    Swal.fire({
+      title: 'Esta seguro de eliminar el ingreso?',
+      icon: 'warning',
+      confirmButtonColor: '#e53e3e',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeIncome(incomeSelected.id)
+      }
+    })
+  }
+
+  const handlerUpdateSelectedIncome = ({ itemUpdate }) => {
+    setError(null)
+    setIncomeSelected(prevState => ({ ...prevState, ...itemUpdate }))
+  }
+
+  const handlerChangeIncomeSelected = (incomeSelected) => {
+    setError(null)
+    setIncomeSelected(incomeSelected)
+  }
+
+  const handlerClickEdit = () => {
+    setError(null)
+    if (!incomeSelected.id) {
+      return setError('Debe seleccionar un ingreso para editar')
+    }
+    return setModalEditIncome(true)
+  }
+
+  const updateIncome = () => {
+    setError(null)
+    if (!incomeSelected.id) return setError('Debe seleccionar un ingreso para editar')
+    if (!incomeSelected.value || !incomeSelected.description) return setError('Debe completar todos los campos')
+
+    const idIncome = incomeSelected.id
+    const incomeUpdate = {
+      value: Number(incomeSelected.value),
+      description: incomeSelected.description
+    }
+    updateIncomeService({ token: getToken, id: idIncome, data: incomeUpdate })
+      .then(res => {
+        if (res.status === 200) {
+          Swal.fire(
+            'Atención!',
+            'Ingreso actualizado con exito!',
+            'success'
+          )
+          setModalEditIncome(false)
+          return searchAllIncomes()
+        }
+      })
+      .catch(err => {
+        setError(err.message)
+      }
+      )
+  }
   return {
     searchAllIncomes,
     incomes,
     createIncome,
-    error
+    error,
+    handlerChangeIncomeSelected,
+    handlerClickEdit,
+    modalEditIncome,
+    setModalEditIncome,
+    incomeSelected,
+    handlerUpdateSelectedIncome,
+    updateIncome,
+    handlerClickRemoveIncome
   }
 }
