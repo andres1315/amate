@@ -15,14 +15,14 @@ import {
 import { dashboardNavigation } from '../data/dashboardModule'
 import imgAmate from '../assets//logo.png'
 import logoAmate from '../assets/logofull.png'
-import { HomeDashboard } from './Dashboard/HomeDashboard/HomeDashboard'
-import { Expenditures } from './Dashboard/Expenditures/Expenditures'
-import { Incomes } from './Dashboard/Incomes/Incomes'
-import { CashFlow } from './Dashboard/CashFlow/CashFlow'
-import { Order } from './Dashboard/Order'
-import { useUser } from '../hooks/useUser'
-import { Customers } from './Dashboard/Customers/Customers'
-import { Suppliers } from './Dashboard/Suppliers/Suppliers'
+import { HomeDashboard } from './Dashboard/HomeDashboard/HomeDashboard.jsx'
+import { Expenditures } from './Dashboard/Expenditures/Expenditures.jsx'
+import { Incomes } from './Dashboard/Incomes/Incomes.jsx'
+import { CashFlow } from './Dashboard/CashFlow/CashFlow.jsx'
+import { Order } from './Dashboard/Order.jsx'
+import { useUser } from '../hooks/useUser.js'
+import { Customers } from './Dashboard/Customers/Customers.jsx'
+import { Suppliers } from './Dashboard/Suppliers/Suppliers.jsx'
 export const Dashboard = () => {
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
