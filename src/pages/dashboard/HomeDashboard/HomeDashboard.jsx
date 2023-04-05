@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSackDollar, faDollarSign, faMoneyBillTrendUp, faSackXmark } from '@fortawesome/free-solid-svg-icons'
 import { formatterPeso } from '../../../utils/utils'
-import { getIncomes, getIncomesMonth } from '../incomes/services.js'
+import { getAllIncomes, getIncomesMonth } from '../incomes/services.js'
 import { useEffect, useState } from 'react'
 import { getExpenditures, getExpendituresCurrentMonth } from '../Expenditures/services.js'
 import { useUser } from '../../../hooks/useUser'
@@ -21,7 +21,7 @@ export const HomeDashboard = () => {
   const { getToken } = useUser()
 
   useEffect(() => {
-    getIncomes({ token: getToken }).then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
+    getAllIncomes({ token: getToken }).then((res) => setIcomes(res.reduce((sum, obj) => sum + obj.value, 0)))
     getExpenditures({ token: getToken }).then(res => setExpenditures(res.reduce((sum, obj) => sum + obj.value, 0)))
     getIncomesMonth({ token: getToken }).then((res) => setIcomesCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))
     getExpendituresCurrentMonth({ token: getToken }).then(res => setExpendituresCurrentMonth(res.reduce((sum, obj) => sum + obj.value, 0)))

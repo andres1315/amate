@@ -9,12 +9,14 @@ import { useCustomers } from '../../../hooks/useCustomers'
 import { TableListRadio } from '../../../components/Tables/TableListRadio'
 import { formatDate, formatterPeso } from '../../../utils/utils'
 import { Modal } from '../../../components/Modal/Modal'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const Incomes = () => {
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm()
   const {
     searchAllIncomes, incomes, createIncome, error: errorIncomes,
-    handlerChangeIncomeSelected, handlerClickEdit, modalEditIncome, setModalEditIncome, incomeSelected, handlerUpdateSelectedIncome, updateIncome, handlerClickRemoveIncome
+    handlerChangeIncomeSelected, handlerClickEdit, modalEditIncome, setModalEditIncome, incomeSelected, handlerUpdateSelectedIncome, updateIncome, handlerClickRemoveIncome, monthViewed, handlerChangeMonthViewed
   } = useIncomes({ reset })
   const { searchAllCustomers, error: errorCustomers, customers } = useCustomers()
 
@@ -26,6 +28,7 @@ const Incomes = () => {
     searchAllCustomers()
   }, [])
 
+  const nameMonths = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const headTableIncomes = ['', 'Cliente', 'Valor', 'Descripcion', 'Fecha']
 
   const options = customers.map(customer => ({ value: customer.id, label: customer.name }))
@@ -34,6 +37,26 @@ const Incomes = () => {
       <div className='grid grid-cols-12 gap-6'>
         <div className='col-span-12 md:col-span-2 mx-1 md:border-r-2 md:h-screen px-2 overflow-auto'>
           <h2 className='text-center font-bold text-rose-700'>Ingresos</h2>
+          <div className='flex justify-around'>
+            <div>
+              <button
+                className='text-brown-900 hover:font-bold items-center rounded-md border border-transparent  px-2 py-2 text-sm font-medium leading-4 bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2'
+                onClick={() => handlerChangeMonthViewed('minus')}
+              ><FontAwesomeIcon icon={faArrowLeft} />
+              </button>
+
+            </div>
+            <div className='text-center font-bold text-rose-700'>{nameMonths[monthViewed]}</div>
+            <div>
+              <button
+                className='text-brown-900 hover:font-bold items-center rounded-md border border-transparent  px-2 py-2 text-sm font-medium leading-4 bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2'
+                onClick={() => handlerChangeMonthViewed('sum')}
+              ><FontAwesomeIcon icon={faArrowRight} />
+              </button>
+
+            </div>
+
+          </div>
           <form onSubmit={handleSubmit(createIncome)}>
             <div className='mt-2'>
               <SelectTw

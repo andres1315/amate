@@ -3,14 +3,19 @@ import { createIncomeService, getIncomes, removeIncomeService, updateIncomeServi
 import { useUser } from './useUser'
 import Swal from 'sweetalert2'
 export function useIncomes ({ reset }) {
+  const date = new Date()
+  const currentMonth = date.getMonth()
+  const currentYear = date.getFullYear()
   const [incomes, setIncomes] = useState([])
   const { getToken, dataUser } = useUser()
   const [error, setError] = useState(null)
   const [incomeSelected, setIncomeSelected] = useState({})
   const [modalEditIncome, setModalEditIncome] = useState(false)
-  const searchAllIncomes = () => {
+  const [monthViewed, setMonthViewed] = useState(currentMonth)
+
+  const searchAllIncomes = (month = currentMonth, year = currentYear) => {
     setError(null)
-    getIncomes({ token: getToken })
+    getIncomes({ token: getToken, month, year })
       .then(incomes => setIncomes(incomes))
       .catch(err => setError(err))
   }
@@ -125,6 +130,25 @@ export function useIncomes ({ reset }) {
       }
       )
   }
+  const handlerChangeMonthViewed = (action) => {
+    if (action === 'sum') {
+      if (monthViewed === 11) {
+        setMonthViewed(1)
+        searchAllIncomes(1)
+      } else {
+        searchAllIncomes(monthViewed + 1)
+        setMonthViewed(prevState => prevState + 1)
+      }
+    } else {
+      if (monthViewed === 0) {
+        setMonthViewed(12)
+        searchAllIncomes(12)
+      } else {
+        searchAllIncomes(monthViewed - 1)
+        setMonthViewed(prevState => prevState - 1)
+      }
+    }
+  }
   return {
     searchAllIncomes,
     incomes,
@@ -137,6 +161,8 @@ export function useIncomes ({ reset }) {
     incomeSelected,
     handlerUpdateSelectedIncome,
     updateIncome,
-    handlerClickRemoveIncome
+    handlerClickRemoveIncome,
+    monthViewed,
+    handlerChangeMonthViewed
   }
 }

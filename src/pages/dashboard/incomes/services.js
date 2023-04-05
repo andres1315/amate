@@ -1,7 +1,38 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const getIncomes = ({ token }) => {
+const getIncomes = ({ token, month, year }) => {
+  return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes/year/${year}/month/${month}`,
+    {
+      headers: { authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      if (res.status === 200) {
+        return res.data.data.map(income => (
+          {
+            createdAt: income.createdAt,
+            customer: {
+              id: income.customer.id,
+              name: income.customerDetail.name
+            },
+            description: income.description,
+            value: income.value,
+            id: income.id
+          }
+        )) || []
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return Swal.fire(
+        'Atención!',
+        'Se presento un error al consultar los ingresos!',
+        'error'
+      )
+    })
+}
+
+const getAllIncomes = ({ token, month, year }) => {
   return axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/incomes`,
     {
       headers: { authorization: `Bearer ${token}` }
@@ -91,6 +122,7 @@ const updateIncomeService = ({ token, id, data }) => {
 
 export {
   getIncomes,
+  getAllIncomes,
   getIncomesMonth,
   createIncomeService,
   removeIncomeService,
