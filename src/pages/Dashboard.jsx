@@ -21,8 +21,8 @@ import { Incomes } from './dashboard/incomes/Incomes'
 import { CashFlow } from './dashboard/CashFlow/CashFlow'
 import { Order } from './dashboard/Order'
 import { useUser } from '../hooks/useUser'
-import { Customers } from './dashboard/customers/Customers'
-import { Suppliers } from './dashboard/Suppliers/Suppliers'
+import { Customers } from './Dashboard/Customers/Customers'
+import { Suppliers } from './Dashboard/Suppliers/Suppliers'
 export const Dashboard = () => {
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
