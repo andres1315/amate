@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createIncomeService, getIncomes, removeIncomeService, updateIncomeService } from '../pages/dashboard/Incomes/services'
 import { useUser } from './useUser'
 import Swal from 'sweetalert2'
-export function useIncomes ({ reset }) {
-  const date = new Date()
-  const currentMonth = date.getMonth()
-  const currentYear = date.getFullYear()
+export function useIncomes ({ reset, currentMonth = new Date().getMonth(), currentYear = new Date().getFullYear() }) {
   const [incomes, setIncomes] = useState([])
   const { getToken, dataUser } = useUser()
   const [error, setError] = useState(null)
   const [incomeSelected, setIncomeSelected] = useState({})
   const [modalEditIncome, setModalEditIncome] = useState(false)
   const [monthViewed, setMonthViewed] = useState(currentMonth)
+
+  useEffect(() => {
+    searchAllIncomes()
+  }, [])
 
   const searchAllIncomes = (month = currentMonth, year = currentYear) => {
     setError(null)
@@ -42,15 +43,12 @@ export function useIncomes ({ reset }) {
         }
       })
       .catch(err => {
-        if (err.response.status === 401) {
-          setError(err.response.data.message)
-        } else {
-          setError('Se presento un error al registrar el ingreso!')
-        }
+        setError(err.message)
       })
   }
 
   const removeIncome = (id) => {
+    setError(null)
     removeIncomeService({ token: getToken, id })
       .then(res => {
         if (res.status === 200) {
@@ -131,6 +129,7 @@ export function useIncomes ({ reset }) {
       )
   }
   const handlerChangeMonthViewed = (action) => {
+    setError(null)
     if (action === 'sum') {
       if (monthViewed === 11) {
         setMonthViewed(1)
@@ -150,7 +149,6 @@ export function useIncomes ({ reset }) {
     }
   }
   return {
-    searchAllIncomes,
     incomes,
     createIncome,
     error,

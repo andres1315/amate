@@ -15,8 +15,7 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 const Incomes = () => {
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm()
   const {
-    searchAllIncomes, incomes, createIncome, error: errorIncomes,
-    handlerChangeIncomeSelected, handlerClickEdit, modalEditIncome, setModalEditIncome, incomeSelected, handlerUpdateSelectedIncome, updateIncome, handlerClickRemoveIncome, monthViewed, handlerChangeMonthViewed
+    incomes, createIncome, error: errorIncomes, handlerChangeIncomeSelected, handlerClickEdit, modalEditIncome, setModalEditIncome, incomeSelected, handlerUpdateSelectedIncome, updateIncome, handlerClickRemoveIncome, monthViewed, handlerChangeMonthViewed
   } = useIncomes({ reset })
   const { searchAllCustomers, error: errorCustomers, customers } = useCustomers()
 
@@ -24,7 +23,6 @@ const Incomes = () => {
   if (errorCustomers) Swal.fire('Error', errorCustomers, 'error')
 
   useEffect(() => {
-    searchAllIncomes()
     searchAllCustomers()
   }, [])
 

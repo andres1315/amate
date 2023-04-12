@@ -87,8 +87,8 @@ const createIncomeService = ({ token, data }) => {
       return res
     })
     .catch(err => {
-      console.log(err)
-      throw new Error('Se presento un error al registrar el ingreso!')
+      console.log(err.response.data.message)
+      throw new Error(err.response.data.message)
     })
 }
 

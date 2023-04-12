@@ -6,7 +6,6 @@ export const getAccountingPeriodService = ({ token }) => {
       headers: { authorization: `Bearer ${token}` }
     })
     .then(res => {
-      console.log({ res })
       return res.data
     })
     .catch(err => {
